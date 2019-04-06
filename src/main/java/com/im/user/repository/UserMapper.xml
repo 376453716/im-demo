@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.im.user.repository.UserMapper">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="accid" jdbcType="VARCHAR" property="accid"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="birth" jdbcType="VARCHAR" property="birth"/>
+        <result column="gender" jdbcType="BIT" property="gender"/>
+        <result column="ex" jdbcType="VARCHAR" property="ex"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, accid, token, mobile, name, icon, birth, gender, ex, create_time, update_time, 
+    is_delete
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="com.entity.User">
+    insert into user (mobile,  is_delete)
+    values (#{mobile,jdbcType=VARCHAR},0)
+  </insert>
+
+    <update id="user" parameterType="com.entity.User">
+        update user
+        <set>
+            <if test="accid != null">
+                accid = #{accid,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="birth != null">
+                birth = #{birth,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="ex != null">
+                ex = #{ex,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

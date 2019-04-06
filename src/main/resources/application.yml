@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: api-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      im:
+        db-type: mysql
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+        maxActive: 100
+        maxWait: 5000
+        filters: stat,wall
+        connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000
+        time-between-eviction-runs-millis: 60000
+        wall.config.multiStatementAllow: true
+        web-stat-filter.enabled: true
+        stat-view-servlet.enabled: true
+        web-stat-filter.session-stat-enable: true
+        url: jdbc:mysql://39.108.248.86:3306/im?characterEncoding=UTF-8
+        username: im
+        password: Im123!@#
+  profiles:
+    active: ${profile.active}
+
+
+
+####datasource admin
+management:
+  security:
+    enabled: false
+
+
+info:
+  app:
+    java:
+      version: 1.8
+      target: 1.8
+    encoding: utf8
+    name: api-service
+
+
+#### mybatis plus
+mybatis-plus:
+  mapper-locations: classpath:/com/im/*/repository/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.im.*.entity
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 0
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    logic-delete-value: 1
+    logic-not-delete-value: 0
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    #自定义填充策略接口实现
+    #meta-object-handler: com.baomidou.mybatisplus.mapper.MyMetaObjectHandler
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: 'null'
+
+app.name: im-api-server
+
+jwt:
+  header: Authorization
+  expires_in: 6 # 6个月
+  secret: queenvictoria
+
+security:
+  config:
+    ignorePath: /auth/**,/third/**,/swagger-ui.html,/swagger-ui.html,/webjars/**,/v2/**,/swagger-resources/**,/actuator/*
+
+logging:
+  level:
+    root: info
